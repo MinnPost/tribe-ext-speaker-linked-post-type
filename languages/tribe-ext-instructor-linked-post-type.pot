@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"Project-Id-Version: The Events Calendar Extension: Instructor Linked Post "
+"Project-Id-Version: The Events Calendar Extension: Speaker Linked Post "
 "Type\n"
 "POT-Creation-Date: 2019-10-29 12:01+0100\n"
 "PO-Revision-Date: 2018-03-15 22:31-0500\n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: tribe-ext-instructor-linked-post-type.php\n"
+"X-Poedit-WPHeader: tribe-ext-speaker-linked-post-type.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
@@ -22,116 +22,116 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: src/views/tribe_ext_instructor/single.php:30
+#: src/views/tribe_ext_speaker/single.php:30
 #, php-format
 msgid "&larr; Back to %s"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:279
+#: tribe-ext-speaker-linked-post-type.php:279
 msgctxt "field label"
 msgid "Phone"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:280
+#: tribe-ext-speaker-linked-post-type.php:280
 msgctxt "field label"
 msgid "Website"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:281
+#: tribe-ext-speaker-linked-post-type.php:281
 msgctxt "field label"
 msgid "Email Address"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:408
+#: tribe-ext-speaker-linked-post-type.php:408
 msgctxt "Post type general name"
-msgid "Instructors"
+msgid "Speakers"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:409
+#: tribe-ext-speaker-linked-post-type.php:409
 msgctxt "Post type singular name"
-msgid "Instructor"
+msgid "Speaker"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:413
-msgid "Add New Instructor"
+#: tribe-ext-speaker-linked-post-type.php:413
+msgid "Add New Speaker"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:414
-msgid "Edit Instructor"
+#: tribe-ext-speaker-linked-post-type.php:414
+msgid "Edit Speaker"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:415
-msgid "New Instructor"
+#: tribe-ext-speaker-linked-post-type.php:415
+msgid "New Speaker"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:416
-msgid "View Instructor"
+#: tribe-ext-speaker-linked-post-type.php:416
+msgid "View Speaker"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:417
-msgid "View Instructors"
+#: tribe-ext-speaker-linked-post-type.php:417
+msgid "View Speakers"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:418
-msgid "Search Instructors"
+#: tribe-ext-speaker-linked-post-type.php:418
+msgid "Search Speakers"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:419
-msgid "No instructors found"
+#: tribe-ext-speaker-linked-post-type.php:419
+msgid "No speakers found"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:420
-msgid "No instructors found in Trash"
+#: tribe-ext-speaker-linked-post-type.php:420
+msgid "No speakers found in Trash"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:421
-msgid "Instructors"
+#: tribe-ext-speaker-linked-post-type.php:421
+msgid "Speakers"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:422
-msgid "Instructor Archives"
+#: tribe-ext-speaker-linked-post-type.php:422
+msgid "Speaker Archives"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:423
-msgid "Insert into instructor"
+#: tribe-ext-speaker-linked-post-type.php:423
+msgid "Insert into speaker"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:424
-msgid "Uploaded to this instructor"
+#: tribe-ext-speaker-linked-post-type.php:424
+msgid "Uploaded to this speaker"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:425
-msgid "Instructors list"
+#: tribe-ext-speaker-linked-post-type.php:425
+msgid "Speakers list"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:426
-msgid "Instructors list navigation"
+#: tribe-ext-speaker-linked-post-type.php:426
+msgid "Speakers list navigation"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:431
-msgid "Instructors linked to Events"
+#: tribe-ext-speaker-linked-post-type.php:431
+msgid "Speakers linked to Events"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:609
+#: tribe-ext-speaker-linked-post-type.php:609
 #, php-format
 msgid "%s Information"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:693
+#: tribe-ext-speaker-linked-post-type.php:693
 msgid ":"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:810
+#: tribe-ext-speaker-linked-post-type.php:810
 #, php-format
 msgid "Unnamed %s"
 msgstr ""
 
-#: tribe-ext-instructor-linked-post-type.php:1233
+#: tribe-ext-speaker-linked-post-type.php:1233
 msgid "There were no results found."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "The Events Calendar Extension: Instructor Linked Post Type"
+msgid "The Events Calendar Extension: Speaker Linked Post Type"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
@@ -141,7 +141,7 @@ msgstr ""
 #. Description of the plugin/theme
 msgid ""
 "A boilerplate/starter extension for you to use as-is or fork. Used as-is, an "
-"\"Instructor\" custom post type will be created and linked to The Events "
+"\"Speaker\" custom post type will be created and linked to The Events "
 "Calendar's Events, like Organizers are, and basic output will be added to "
 "the Single Event Page. See this plugin file's code comments for forking "
 "instructions."

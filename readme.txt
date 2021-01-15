@@ -1,4 +1,4 @@
-=== The Events Calendar Extension: Instructor Linked Post Type ===
+=== The Events Calendar Extension: Speaker Linked Post Type ===
 Contributors: ModernTribe
 Donate link: http://m.tri.be/29
 Tags: events, calendar
@@ -15,7 +15,7 @@ A boilerplate/starter extension to implement a custom Linked Post Type for you t
 
 A boilerplate/starter extension for you to use as-is or fork.
 
-Used as-is, an "Instructor" custom post type will be created and linked to The Events Calendar's Events, like Organizers are, and basic output will be added to the Single Event Page. See this plugin file's code comments for forking instructions.
+Used as-is, an "Speaker" custom post type will be created and linked to The Events Calendar's Events, like Organizers are, and basic output will be added to the Single Event Page. See this plugin file's code comments for forking instructions.
 
 == Installation ==
 
@@ -49,9 +49,9 @@ tends to be very limited.
 * Added `GitHub Plugin URI` to the plugin header to enable automatic updates in the future. REMOVE THIS IF YOU FORK this extension instead of using it as-is
 * Linked posts now output in the same order as the wp-admin drag-and-drop order instead of alphabetically
 * This functionality requires The Events Calendar (TEC) version 4.6.14 or later, but this extension can still be used with TEC 4.6+
-* Events with Instructors from prior to this update will need to be re-saved in order to set the meta key that handles the ordering
+* Events with Speakers from prior to this update will need to be re-saved in order to set the meta key that handles the ordering
 
 = [1.0.0] 2018-03-16 =
 
 * Initial release
-* Known issue: The Single Instructor pages do not have Previous Events or Next Events navigation. This is the same as Single Organizer pages.
+* Known issue: The Single Speaker pages do not have Previous Events or Next Events navigation. This is the same as Single Organizer pages.
