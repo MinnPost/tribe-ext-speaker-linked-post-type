@@ -254,7 +254,7 @@ if (
 		 */
 		public function has_this_post_types_custom_fields( $data ) {
 			foreach ( $this->get_custom_field_keys() as $key ) {
-				if ( isset( $data[$key] ) && $data[$key] ) {
+				if ( isset( $data[ $key ] ) && $data[ $key ] ) {
 					return true;
 				}
 			}
@@ -589,6 +589,7 @@ if (
 
 			add_meta_box(
 				$meta_box_id,
+				// translators: it's the singular name from the post type labels
 				sprintf( esc_html__( '%s Information', 'tribe-ext-speaker-linked-post-type' ), $this->get_post_type_label( 'singular_name' ) ),
 				array( $this, 'meta_box' ),
 				self::POST_TYPE_KEY,
@@ -662,7 +663,7 @@ if (
 			$output = sprintf(
 				'<tr class="linked-post %1$s tribe-linked-type-%1$s-%2$s">
 			<td>
-			<label for="%3$s">%4$s</label>
+			<label for="%3$s">%4$s:</label>
 			</td>
 			<td>
 			<input id="%3$s" type="text"
@@ -673,7 +674,7 @@ if (
 				self::POST_TYPE_KEY,
 				esc_attr( $custom_field_label ),
 				$custom_field_key,
-				esc_html__( $custom_field_label . ':', 'tribe-ext-speaker-linked-post-type' ),
+				$custom_field_label,
 				$name,
 				esc_html( $value )
 			);
@@ -692,23 +693,24 @@ if (
 		public function save_data_from_meta_box( $post_id = null, $post = null ) {
 			// was this submitted from the single post type editor?
 			$post_type_container_name = $this->get_post_type_container_name();
-			error_log( 'save data' );
 			if (
 				empty( $_POST['post_ID'] )
-				|| $_POST['post_ID'] != $post_id
+				|| (int) $_POST['post_ID'] !== (int) $post_id
 				|| empty( $_POST[ $post_type_container_name ] )
 			) {
-				error_log( 'it is empty' );
 				return;
 			}
 
 			// is the current user allowed to edit this post?
 			if ( ! current_user_can( 'edit_' . self::POST_TYPE_KEY, $post_id ) ) {
-				error_log( 'it is not allowed. the key is ' . self::POST_TYPE_KEY );
 				return;
 			}
 
 			$data = stripslashes_deep( $_POST[ $post_type_container_name ] );
+
+			if ( ! is_array( $deep ) ) {
+
+			}
 
 			$this->update_existing( $post_id, $data );
 		}
@@ -787,12 +789,13 @@ if (
 			$name_field_index = $this->get_post_type_container_name();
 
 			if (
-				( isset( $data[$name_field_index] )
-					&& $data[$name_field_index]
+				( isset( $data[ $name_field_index ] )
+					&& $data[ $name_field_index ]
 				)
 				|| $this->has_this_post_types_custom_fields( $data )
 			) {
-				$title   = isset( $data[$name_field_index] ) ? $data[$name_field_index] : sprintf( esc_html__( 'Unnamed %s', 'tribe-ext-speaker-linked-post-type' ), $this->get_post_type_label( 'singular_name' ) );
+				// translators: it's the singular name from the post type labels.
+				$title   = isset( $data[ $name_field_index ] ) ? $data[ $name_field_index ] : sprintf( esc_html__( 'Unnamed %s', 'tribe-ext-speaker-linked-post-type' ), $this->get_post_type_label( 'singular_name' ) );
 				$content = isset( $data['Description'] ) ? $data['Description'] : '';
 				$slug    = sanitize_title( $title );
 
@@ -800,7 +803,7 @@ if (
 
 				$our_id = $this->get_post_id_field_name();
 
-				unset( $data[$our_id] );
+				unset( $data[ $our_id ] );
 
 				$postdata = array(
 					'post_title'    => $title,
@@ -843,7 +846,6 @@ if (
 		 */
 		protected function update_existing( $id, $data ) {
 			$data = new Tribe__Data( $data, '' );
-			error_log( 'update existing field' );
 			// Update existing. Beware of the potential for infinite loops if you hook to 'save_post' (if it aggressively affects all post types) or if you hook to 'save_post_' . self::POST_TYPE_KEY
 			if ( 0 < absint( $id ) ) {
 				$args = array( 'ID' => $id );
@@ -877,14 +879,14 @@ if (
 			}
 
 			// No point in saving ID to itself.
-			unset( $data[$our_id] );
+			unset( $data[ $our_id ] );
 
 			/*
 			 * The post name is saved in the post_title.
 			 *
 			 * @see Tribe__Events__Linked_Posts::get_post_type_name_field_index()
 			 */
-			unset( $data[$name_field_index] );
+			unset( $data[ $name_field_index ] );
 
 			foreach ( $data as $meta_key => $meta_value ) {
 				$meta_value = $this->sanitize_a_custom_fields_value( $meta_key, $meta_value );
