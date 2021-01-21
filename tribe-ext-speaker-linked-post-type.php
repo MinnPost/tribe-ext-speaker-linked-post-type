@@ -608,12 +608,12 @@ if (
 			?>
 
 			<style type="text/css">
-				#EventInfo-<?php echo self::POST_TYPE_KEY; ?> {
+				#EventInfo-<?php echo esc_attr( self::POST_TYPE_KEY ); ?> {
 					border: none;
 				}
 			</style>
-			<div id='eventDetails-<?php echo self::POST_TYPE_KEY; ?>' class="inside eventForm">
-				<table cellspacing="0" cellpadding="0" id="EventInfo-<?php echo self::POST_TYPE_KEY; ?>">
+			<div id='eventDetails-<?php echo esc_attr( self::POST_TYPE_KEY ); ?>' class="inside eventForm">
+				<table cellspacing="0" cellpadding="0" id="EventInfo-<?php echo esc_attr( self::POST_TYPE_KEY ); ?>">
 					<?php
 					foreach ( $this->get_custom_field_labels() as $custom_field_label ) {
 						echo $this->get_meta_box_tr_html_for_a_field_label( $custom_field_label, $post_id );
@@ -705,12 +705,8 @@ if (
 			if ( ! current_user_can( 'edit_' . self::POST_TYPE_KEY, $post_id ) ) {
 				return;
 			}
-
+			// this data gets sanitized in a later method
 			$data = stripslashes_deep( $_POST[ $post_type_container_name ] );
-
-			if ( ! is_array( $deep ) ) {
-
-			}
 
 			$this->update_existing( $post_id, $data );
 		}
@@ -1074,9 +1070,8 @@ if (
 			// Cannot use is_singular() within pre_get_posts because the queried object is not yet set
 			if ( ! empty( $wp_query->tribe_ext_is_event_speaker ) ) {
 				return true;
-			} else {
-				return (bool) $tribe_is_event_query;
 			}
+			return (bool) $tribe_is_event_query;
 		}
 
 		/**
