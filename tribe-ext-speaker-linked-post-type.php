@@ -119,7 +119,6 @@ if (
 
 			add_action( 'init', array( $this, 'register_our_post_type' ) );
 			add_action( 'init', array( $this, 'link_post_type_to_events' ) );
-			add_action( 'wp_loaded', array( $this, 'set_our_capabilities' ) );
 			add_filter( 'tribe_events_linked_post_type_args', array( $this, 'filter_linked_post_type_args' ), 10, 2 );
 			add_filter( 'tribe_events_linked_post_id_field_index', array( $this, 'linked_post_id_field_index' ), 10, 2 );
 			add_filter( 'tribe_events_linked_post_name_field_index', array( $this, 'get_post_type_name_field_index' ), 10, 2 );
@@ -266,7 +265,7 @@ if (
 		/**
 		 * Our post type's custom field label names.
 		 *
-		 * Enter "Phone" or "Email Address" -- however you want it to look to the
+		 * Enter "Title" or "Twitter Username" -- however you want it to look to the
 		 * user, and the actual custom field key will be created from it.
 		 *
 		 * @see Tribe__Extension__Speaker_Linked_Post_Type::sanitize_a_custom_fields_value()
@@ -275,9 +274,8 @@ if (
 		 */
 		protected function get_custom_field_labels() {
 			$field_labels = array(
-				esc_html_x( 'Phone', 'field label', 'tribe-ext-speaker-linked-post-type' ),
-				esc_html_x( 'Website', 'field label', 'tribe-ext-speaker-linked-post-type' ),
-				esc_html_x( 'Email Address', 'field label', 'tribe-ext-speaker-linked-post-type' ),
+				esc_html_x( 'Title', 'field label', 'tribe-ext-speaker-linked-post-type' ),
+				esc_html_x( 'Twitter Username', 'field label', 'tribe-ext-speaker-linked-post-type' ),
 			);
 
 			$field_labels = array_map( 'esc_html', $field_labels );
@@ -304,17 +302,14 @@ if (
 
 			foreach ( $this->get_custom_field_labels() as $custom_field_label ) {
 				$custom_field_key = $this->get_a_custom_field_key_from_label( $custom_field_label );
-				if ( $custom_field_key == $meta_key ) {
+				if ( $custom_field_key === $meta_key ) {
 					// Always run all fields through esc_html()
 					$meta_value = esc_html( $meta_value );
 
 					// TODO: Add your own logic here for each field label that requires it.
-					// Note that no help text regarding this validation is displayed to the user so they may be surprised by the result (e.g. if they had a typo in the email address, forgetting the @ symbol).
-					if ( 'Website' == $custom_field_label ) {
-						$meta_value = esc_url_raw( $meta_value );
-					}
-					if ( 'Email Address' == $custom_field_label ) {
-						$meta_value = sanitize_email( $meta_value );
+					// Note that no help text regarding this validation is displayed to the user so they may be surprised by the result.
+					if ( 'Twitter Username' === $custom_field_label ) {
+						$meta_value = esc_attr( $meta_value );
 					}
 				}
 			}
@@ -325,7 +320,7 @@ if (
 		/**
 		 * Our post type's custom field label names.
 		 *
-		 * Enter "Phone" or "Email Address" -- however you want it to look to the
+		 * Enter "Title" or "Twitter username" -- however you want it to look to the
 		 * user -- and the actual custom field key will be created from it.
 		 *
 		 * @return string
@@ -425,22 +420,32 @@ if (
 				'items_list_navigation'   => esc_html__( 'Speakers list navigation', 'tribe-ext-speaker-linked-post-type' ),
 			);
 
+			$capabilities = array(
+				'edit_post'          => 'edit_tribe_ext_speaker',
+				'read_post'          => 'read_tribe_ext_speaker',
+				'delete_post'        => 'delete_tribe_ext_speaker',
+				'delete_posts'       => 'delete_tribe_ext_speakers',
+				'edit_posts'         => 'edit_tribe_ext_speakers',
+				'edit_others_posts'  => 'edit_others_tribe_ext_speakers',
+				'publish_posts'      => 'publish_tribe_ext_speakers',
+				'read_private_posts' => 'read_private_tribe_ext_speakers',
+				'create_posts'       => 'create_tribe_ext_speakers',
+			);
+
 			$args = array(
 				'labels'              => $labels,
 				'description'         => esc_html__( 'Speakers linked to Events', 'tribe-ext-speaker-linked-post-type' ),
 				'public'              => true,
-				'exclude_from_search' => true,
+				'exclude_from_search' => false,
+				'has_archive'         => false,
 				'show_in_menu'        => 'edit.php?post_type=' . Tribe__Events__Main::POSTTYPE,
 				'menu_icon'           => 'dashicons-businessman',
 				'capability_type'     => self::POST_TYPE_KEY,
-				'map_meta_cap'        => true, // must be true for $this->set_our_capabilities() to take effect
+				'capabilities'        => $capabilities,
 				'supports'            => array(
-					'author',
-					'editor',
-					'excerpt',
-					'revisions',
-					'thumbnail',
 					'title',
+					'revisions',
+					'editor',
 				),
 				'rewrite'             => array(
 					'slug'       => self::POST_TYPE_SLUG,
@@ -449,27 +454,6 @@ if (
 			);
 
 			register_post_type( self::POST_TYPE_KEY, $args );
-		}
-
-		/**
-		 * Set the initial capabilities for our post type on default roles.
-		 *
-		 * @see Tribe__Events__Capabilities::set_initial_caps()
-		 */
-		public function set_our_capabilities() {
-			$tribe_events_capabilities = new Tribe__Events__Capabilities();
-
-			$roles = array(
-				'administrator',
-				'editor',
-				'author',
-				'contributor',
-				'subscriber',
-			);
-
-			foreach ( $roles as $role ) {
-				$tribe_events_capabilities->register_post_type_caps( self::POST_TYPE_KEY, $role );
-			}
 		}
 
 		/**
@@ -708,21 +692,23 @@ if (
 		public function save_data_from_meta_box( $post_id = null, $post = null ) {
 			// was this submitted from the single post type editor?
 			$post_type_container_name = $this->get_post_type_container_name();
-
+			error_log( 'save data' );
 			if (
 				empty( $_POST['post_ID'] )
 				|| $_POST['post_ID'] != $post_id
-				|| empty( $_POST[$post_type_container_name] )
+				|| empty( $_POST[ $post_type_container_name ] )
 			) {
+				error_log( 'it is empty' );
 				return;
 			}
 
 			// is the current user allowed to edit this post?
 			if ( ! current_user_can( 'edit_' . self::POST_TYPE_KEY, $post_id ) ) {
+				error_log( 'it is not allowed. the key is ' . self::POST_TYPE_KEY );
 				return;
 			}
 
-			$data = stripslashes_deep( $_POST[$post_type_container_name] );
+			$data = stripslashes_deep( $_POST[ $post_type_container_name ] );
 
 			$this->update_existing( $post_id, $data );
 		}
@@ -766,20 +752,20 @@ if (
 
 			// Check to see if we're updating an already-existing post.
 			if (
-				isset( $data[$our_id] )
-				&& 0 < (int) $data[$our_id]
+				isset( $data[ $our_id ] )
+				&& 0 < (int) $data[ $our_id ]
 			) {
 				if (
-					! empty( $data[$our_id] )
+					! empty( $data[ $our_id ] )
 					&& 1 === count( $data )
 				) {
 					// We're updating an existing post but only an ID was passed, no other data.
 					// So just return the ID, i.e. do nothing.
-					return $data[$our_id];
+					return $data[ $our_id ];
 				} else {
 					// Need to update an existing post.
 					// See Tribe__Events__Organizer->update() for inspiration how to make an "update" function.
-					return $this->update_existing( $data[$our_id], $data );
+					return $this->update_existing( $data[ $our_id ], $data );
 				}
 			}
 
@@ -857,7 +843,7 @@ if (
 		 */
 		protected function update_existing( $id, $data ) {
 			$data = new Tribe__Data( $data, '' );
-
+			error_log( 'update existing field' );
 			// Update existing. Beware of the potential for infinite loops if you hook to 'save_post' (if it aggressively affects all post types) or if you hook to 'save_post_' . self::POST_TYPE_KEY
 			if ( 0 < absint( $id ) ) {
 				$args = array( 'ID' => $id );
@@ -938,24 +924,14 @@ if (
 
 				// Build the HTML markup applicable to each field.
 				// By default use esc_html(), but we can't do that for all uses of $value because we already have our desired HTML (with escaped values).
-				if ( 'Website' == $custom_field_label ) {
-					$value = esc_url( $value );
+				if ( 'Twitter Username' === $custom_field_label ) {
+					$value = str_replace( '@', '', esc_attr( $value ) );
 
 					if ( empty( $value ) ) {
 						continue;
 					}
 
-					$value = sprintf( '<a href="%1$s">%1$s</a>', $value );
-				} elseif ( 'Email Address' == $custom_field_label ) {
-					$value = antispambot( $value );
-
-					if ( empty( $value ) ) {
-						continue;
-					}
-
-					$email_link = sprintf( 'mailto:%s', $value );
-
-					$value = sprintf( '<a href="%s">%s</a>', esc_url( $email_link, array( 'mailto' ) ), esc_html( $value ) );
+					$value = sprintf( '<a href="https://twitter.com/%1$s">@%1$s</a>', $value );
 				} else {
 					$value = esc_html( $value );
 				}
